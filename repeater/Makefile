@@ -15,12 +15,12 @@ all: release
 release: CCFLAGS += -O2 -DNDEBUG
 release: BUILD = Debug
 release: $(MODULES)
-	$(CC) $(CCFLAGS) $(LDFLAGS) -o $(PROGNAME) $(MODULES)
+	$(CC) $(CCFLAGS) -o $(PROGNAME) $(MODULES) $(LDFLAGS)
 	
 debug: CCFLAGS += -g -D_DEBUG
 debug: BUILD = Release
 debug: $(MODULES)
-	$(CC) $(CCFLAGS) $(LDFLAGS) -o $(PROGNAME) $(MODULES)
+	$(CC) $(CCFLAGS) -o $(PROGNAME) $(MODULES) $(LDFLAGS)
 
 ###################
 # Process modules #
