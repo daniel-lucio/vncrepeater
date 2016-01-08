@@ -607,16 +607,16 @@ viewer_listen(LPVOID lpParam)
 		connection = socket_accept(thread_params->sock, &client, &socklen);
 		if( connection == INVALID_SOCKET ) {
 			if( notstopped ) 
-				debug("viewer_listen(): accept() failed, errno=%d\n", errno);
+				debug("1 viewer_listen(): accept() failed, errno=%d\n", errno);
 			else 
 				break;
 		} else {
 			/* IP Address for monitoring purposes */
 			ip_addr = inet_ntoa( ((struct sockaddr_in *)&client)->sin_addr );
 #ifndef _DEBUG
-			debug("Viewer connection accepted from %s.\n", ip_addr);
+			debug("1 Viewer connection accepted from %s.\n", ip_addr);
 #else
-			debug("Viewer (socket=%d) connection accepted from %s.\n", connection, ip_addr);
+			debug("1 Viewer (socket=%d) connection accepted from %s.\n", connection, ip_addr);
 #endif
 
 			// Act like a server until the authentication phase is over.
@@ -625,15 +625,15 @@ viewer_listen(LPVOID lpParam)
 			if( socket_write_exact(connection, protocol_version, sz_rfbProtocolVersionMsg) < 0 ) {
 				if( ( errno == ECONNRESET  ) || ( errno == ENOTCONN ) ) {
 #ifndef _DEBUG
-					debug("Connection closed by viewer.\n");
+					debug("2 Connection closed by viewer.\n");
 #else
-					debug("Connection closed by viewer (socket=%d) while trying to write protocol version.\n", connection);
+					debug("2 Connection closed by viewer (socket=%d) while trying to write protocol version.\n", connection);
 #endif
 				} else {
 #ifndef _DEBUG
-					debug("Writting protocol version to viewer returned socket error %d.\n", errno);
+					debug("2 Writting protocol version to viewer returned socket error %d.\n", errno);
 #else
-					debug("Writting protocol version to viewer (socket=%d) returned socket error %d.\n", connection, errno);
+					debug("2 Writting protocol version to viewer (socket=%d) returned socket error %d.\n", connection, errno);
 #endif
 				}
 				socket_close( connection );
@@ -641,7 +641,7 @@ viewer_listen(LPVOID lpParam)
 			}
 #ifdef _DEBUG
 			else {
-				debug("Protocol version sent to viewer (socket=%d).\n", connection);
+				debug("2 Protocol version sent to viewer (socket=%d).\n", connection);
 			}
 #endif
 
@@ -650,15 +650,15 @@ viewer_listen(LPVOID lpParam)
 			if( socket_read_exact(connection, protocol_version, sz_rfbProtocolVersionMsg) < 0 ) {
 				if( ( errno == ECONNRESET  ) || ( errno == ENOTCONN ) ) {
 #ifndef _DEBUG
-					debug("Connection closed by viewer.\n");
+					debug("3 Connection closed by viewer.\n");
 #else
-					debug("Connection closed by viewer (socket=%d) while trying to read protocol version.\n", connection);
+					debug("3 Connection closed by viewer (socket=%d) while trying to read protocol version.\n", connection);
 #endif
 				} else {
 #ifndef _DEBUG
-					debug("Reading protocol version from viewer returned socket error %d.\n", errno);
+					debug("3 Reading protocol version from viewer returned socket error %d.\n", errno);
 #else
-					debug("Reading protocol version from viewer (socket=%d) returned socket error %d.\n", connection, errno);
+					debug("3 Reading protocol version from viewer (socket=%d) returned socket error %d.\n", connection, errno);
 #endif
 				}
 				socket_close( connection );
@@ -666,7 +666,7 @@ viewer_listen(LPVOID lpParam)
 			}
 #ifdef _DEBUG
 			else {
-				debug("Viewer (socket=%d) sent protocol version.\n", connection);
+				debug("3 Viewer (socket=%d) sent protocol version.\n", connection);
 			}
 #endif
 
@@ -675,15 +675,15 @@ viewer_listen(LPVOID lpParam)
 			if( socket_write_exact(connection, (char *)&auth_type, sizeof(auth_type)) < 0 ) {
 				if( ( errno == ECONNRESET  ) || ( errno == ENOTCONN ) ) {
 #ifndef _DEBUG
-					debug("Connection closed by viewer.\n");
+					debug("4 Connection closed by viewer.\n");
 #else
-					debug("Connection closed by viewer (socket=%d) while trying to write authentication scheme.\n", connection);
+					debug("4 Connection closed by viewer (socket=%d) while trying to write authentication scheme.\n", connection);
 #endif
 				} else {
 #ifndef _DEBUG
-					debug("Writting authentication scheme to viewer returned socket error %d.\n", errno);
+					debug("4 Writting authentication scheme to viewer returned socket error %d.\n", errno);
 #else
-					debug("Writting authentication scheme to viewer (socket=%d) returned socket error %d.\n", connection, errno);
+					debug("4 Writting authentication scheme to viewer (socket=%d) returned socket error %d.\n", connection, errno);
 #endif
 				}
 				socket_close( connection );
@@ -691,7 +691,7 @@ viewer_listen(LPVOID lpParam)
 			}
 #ifdef _DEBUG
 			else {
-				debug("Authentication scheme sent to viewer (socket=%d).\n", connection);
+				debug("4 Authentication scheme sent to viewer (socket=%d).\n", connection);
 			}
 #endif
 
@@ -700,15 +700,15 @@ viewer_listen(LPVOID lpParam)
 			if( socket_write_exact(connection, (char *)&challenge_key, CHALLENGESIZE) < 0 ) {
 				if( ( errno == ECONNRESET  ) || ( errno == ENOTCONN ) ) {
 #ifndef _DEBUG
-					debug("Connection closed by viewer.\n");
+					debug("5 Connection closed by viewer.\n");
 #else
-					debug("Connection closed by viewer (socket=%d) while trying to write challenge key.\n", connection);
+					debug("5 Connection closed by viewer (socket=%d) while trying to write challenge key.\n", connection);
 #endif
 				} else {
 #ifndef _DEBUG
-					debug("Writting challenge key to viewer returned socket error %d.\n", errno);
+					debug("5 Writting challenge key to viewer returned socket error %d.\n", errno);
 #else
-					debug("Writting challenge key to viewer (socket=%d) returned socket error %d.\n", connection, errno);
+					debug("5 Writting challenge key to viewer (socket=%d) returned socket error %d.\n", connection, errno);
 #endif
 				}
 				socket_close( connection );
@@ -716,7 +716,7 @@ viewer_listen(LPVOID lpParam)
 			}
 #ifdef _DEBUG
 			else {
-				debug("Challenge sent to viewer (socket=%d).\n", connection );
+				debug("5 Challenge sent to viewer (socket=%d).\n", connection );
 			}
 #endif
 
@@ -726,15 +726,15 @@ viewer_listen(LPVOID lpParam)
 			if( socket_read_exact(connection, (char *)&challenge, CHALLENGESIZE) < 0 ) {
 				if( ( errno == ECONNRESET )  || ( errno == ENOTCONN ) ) {
 #ifndef _DEBUG
-					debug("Connection closed by viewer.\n");
+					debug("6 Connection closed by viewer.\n");
 #else
-					debug("Connection closed by viewer (socket=%d) while trying to read challenge response.\n", connection);
+					debug("6 Connection closed by viewer (socket=%d) while trying to read challenge response.\n", connection);
 #endif
 				} else {
 #ifndef _DEBUG
-					debug("Reading challenge response from viewer return socket error %d.\n", errno);
+					debug("6 Reading challenge response from viewer return socket error %d.\n", errno);
 #else
-					debug("Reading challenge response from viewer (socket=%d) return socket error %d.\n", connection, errno);
+					debug("6 Reading challenge response from viewer (socket=%d) return socket error %d.\n", connection, errno);
 #endif
 				}
 				socket_close( connection );
@@ -742,7 +742,7 @@ viewer_listen(LPVOID lpParam)
 			}
 #ifdef _DEBUG
 			else {
-				debug("Viewer (socket=%d) sent challenge response.\n", connection);
+				debug("6 Viewer (socket=%d) sent challenge response.\n", connection);
 			}
 #endif
 
@@ -751,15 +751,15 @@ viewer_listen(LPVOID lpParam)
 			if( socket_write_exact(connection, (char *)&auth_response, sizeof(auth_response)) < 0 ) {
 				if( ( errno == ECONNRESET  ) || ( errno == ENOTCONN ) ) {
 #ifndef _DEBUG
-					debug("Connection closed by viewer.\n");
+					debug("7 Connection closed by viewer.\n");
 #else
-					debug("Connection closed by viewer (socket=%d) while trying to write authentication response.\n", connection);
+					debug("7 Connection closed by viewer (socket=%d) while trying to write authentication response.\n", connection);
 #endif
 				} else {
 #ifndef _DEBUG
-					debug("Writting authentication response to viewer returned socket error %d.\n", errno);
+					debug("7 Writting authentication response to viewer returned socket error %d.\n", errno);
 #else
-					debug("Writting authentication response to viewer (socket=%d) returned socket error %d.\n", connection, errno);
+					debug("7 Writting authentication response to viewer (socket=%d) returned socket error %d.\n", connection, errno);
 #endif
 				}
 				socket_close( connection );
@@ -767,7 +767,7 @@ viewer_listen(LPVOID lpParam)
 			}
 #ifdef _DEBUG
 			else {
-				debug("Authentication response sent to viewer (socket=%d).\n", connection);
+				debug("7 Authentication response sent to viewer (socket=%d).\n", connection);
 			}
 #endif
 
@@ -775,15 +775,15 @@ viewer_listen(LPVOID lpParam)
 			if( socket_read_exact(connection, (char *)&client_init, sizeof(client_init)) < 0 ) {
 				if( ( errno == ECONNRESET )  || ( errno == ENOTCONN ) ) {
 #ifndef _DEBUG
-					debug("Connection closed by viewer.\n");
+					debug("8 Connection closed by viewer.\n");
 #else
-					debug("Connection closed by viewer (socket=%d) while trying to read ClientInit.\n", connection);
+					debug("8 Connection closed by viewer (socket=%d) while trying to read ClientInit.\n", connection);
 #endif
 				} else {
 #ifndef _DEBUG
-					debug("Reading ClientInit from viewer return socket error %d.\n", errno);
+					debug("8 Reading ClientInit from viewer return socket error %d.\n", errno);
 #else
-					debug("Reading ClientInit from viewer (socket=%d) return socket error %d.\n", connection, errno);
+					debug("8 Reading ClientInit from viewer (socket=%d) return socket error %d.\n", connection, errno);
 #endif
 				}
 				socket_close( connection );
@@ -791,7 +791,7 @@ viewer_listen(LPVOID lpParam)
 			} 
 #ifdef _DEBUG
 			else {
-				debug("Viewer (socket=%d) sent ClientInit message.\n", connection);
+				debug("8 Viewer (socket=%d) sent ClientInit message.\n", connection);
 			}
 #endif
 
